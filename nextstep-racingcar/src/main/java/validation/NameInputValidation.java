@@ -5,9 +5,8 @@ public class NameInputValidation {
 	public static final String ERRORBYNAME=" 이름 조건이 부적합합니다";
 	public boolean userName(String name_list){
 		try {
-			if(nameIsNull(name_list)) throw new IllegalStateException(ERROR+ERRORBYNAME);
 			for (String name:name_list.split(",")){
-				nameIsNull(name);
+				if (nameIsCorrectTemplate(name)) throw new IllegalStateException(ERROR+ERRORBYNAME);
 			}
 		}catch (IllegalStateException e){
 			System.out.println(e.getMessage());
@@ -17,19 +16,17 @@ public class NameInputValidation {
 	}
 
 	private boolean nameIsNull(String name){
-		if (name.length()==0){
-			return nameIsSpace(name);
-		}
-		return false;
+		return name.length()==0;
 	}
 
 	private boolean nameIsSpace(String name){
-		if (name.equals(" ")){
-			return nameIsCorrectTemplate(name);
-		}
-		return false;
+		return name.equals(" ");
 	}
-	private boolean nameIsCorrectTemplate(String name){
+	private boolean nameStartComma(String name){
 		return name.charAt(0)==',';
+	}
+
+	private boolean nameIsCorrectTemplate(String name){
+		return nameIsNull(name)||nameIsSpace(name)|| nameStartComma(name);
 	}
 }
